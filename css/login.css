@@ -1,0 +1,62 @@
+body {/*±êÇ©Ñ¡ÔñÆ÷ */
+	background: url(images/in_top_bj.jpg) no-repeat center top;
+	background-size: cover;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-attachment: fixed;
+}
+
+.login-form {
+	margin-top: 10px;
+}
+
+.container-fluid {
+	height: 100%;
+	background: rgba(9, 0, 0, 0.16);
+	overflow: auto;
+}
+
+#logo {
+	padding-top: 30px;
+	margin-top: -30px;
+}
+
+/* #title1 {
+	font-family: "å¾®è½¯é›…é»‘";
+	color: #FFFFF0;
+	font-size: 3.2em;
+	padding-top: 1em;
+	font-weight: 500;
+	letter-spacing: 0.3em;
+	text-shadow: 5px 4px 10px #C0FF3E;
+}
+ */
+#title2 {
+	font-family: "å¾®è½¯é›…é»‘";
+	color: #FFFFF0;
+	font-size: 2.5em;
+	padding-top: 3em;
+	padding-bottom: 0.1em;
+	font-weight: 500;
+	letter-spacing: 0.3em;
+	text-shadow:4px 3px 8px #121114,4px 3px 8px #121114,4px 3px 8px #121114,4px 3px 8px #121114,4px 3px 8px #121114,4px 3px 8px #121114,4px 3px 8px #121114;
+	font-weight: 400
+}
+
+.nav-tabs li.bv-tab-success>a {
+	border-color: #ddd #ddd none;
+}
+
+.nav-tabs li>a {
+	color: #404040;
+	font-weight: bold;
+}
+
+.nav-tabs li>a:HOVER {
+	color: #c0c0c0;
+}
+
+.nav-tabs {
+	border-bottom-style: none;
+}

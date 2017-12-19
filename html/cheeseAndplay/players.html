@@ -1,0 +1,376 @@
+<html style="overflow-y: hidden;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+    <script type="text/javascript" src="../../easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="../../easyui/jquery.easyui.min.js"></script>
+	 <link rel="stylesheet" type="text/css" href="../../easyui/themes/default/easyui.css">
+	 <link rel="stylesheet" type="text/css" href="../../easyui/themes/icon.css">
+	 <link rel="stylesheet" type="text/css" href="../../css/common.css">
+	 <link rel="stylesheet" type="text/css" href="../../css/index.css">
+	 <link rel="stylesheet" type="text/css" href="../../css/style1.css">
+	<!--  <script type="text/javascript" src="../../js/dialog.js"></script> -->
+	 <script type="text/javascript" src="../../js/index1.js"></script>
+</head>
+
+<style>
+body {
+    display: block;
+    margin: 0px;
+}
+     #fm 
+        { 
+            margin: 0; 
+            padding: 10px 30px; 
+        } 
+        .ftitle 
+        { 
+            font-size: 14px; 
+            font-weight: bold; 
+            padding: 5px 0; 
+            margin-bottom: 10px; 
+            border-bottom: 1px solid #ccc; 
+        } 
+        .fitem 
+        { 
+            margin-bottom: 5px; 
+        } 
+        .fitem label 
+        { 
+            display: inline-block; 
+            width: 80px; 
+        } 
+</style>
+<body>
+<div id="dlgBroadPlayers" class="easyui-dialog" style="width: 260px; height: 300px;display:block"
+       closed="true" buttons="#dlg-buttons"> 
+	<table id="playersBroaddg" title="用户推广" class="easyui-datagrid"  toolbar="#toolbarbroad" pagination="true" rownumbers="true" pagenumber=1  pageSize = 10 fitcolumns="true" singleselect="true" style='overflow:"auto"'>
+		        <thead>
+		            <tr>
+		                <th field="player_id" width="25">
+		            	ID
+		                </th>
+		                <th field="name" width="35">
+		                                         账号
+		                </th>
+		                <th field="phone" width="60">
+		                                       手机号
+		                </th>
+		               <th field="points" width="25">
+		                                         点数
+		                </th>
+		            </tr>
+		        </thead>
+	</table>
+</div>
+<table id="dg" title="玩家管理" class="easyui-datagrid"  toolbar="#toolbar1" pagination="true" rownumbers="true" pagenumber=1  pageSize = 10 fitcolumns="true" singleselect="true" style='overflow:"auto"'>
+	        <thead>
+	            <tr>
+	                <th field="player_id" width="25">
+	            	ID
+	                </th>
+	                <th field="name" width="35">
+	                                         账号
+	                </th>
+	                <th field="phone" width="60">
+	                                       手机号
+	                </th>
+	               <th field="points" width="25">
+	                                         点数
+	                </th>
+	            </tr>
+	        </thead>
+</table>
+<div id="toolbarbroad">
+       <!--  <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" onclick="newuser()" plain="true">添加</a> 
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" onclick="edituser()" plain="true">修改</a> 
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove" onclick="destroyUser()" plain="true">删除</a> -->
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" onclick="broadAdmin()" plain="true">用户推广</a>
+</div>
+<div id="toolbar1">
+        <!-- <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" onclick="newuser()" plain="true">添加</a>  -->
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" onclick="edituser()" plain="true">修改积分</a> 
+        <!-- <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove" onclick="destroyUser()" plain="true">删除</a> -->
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" onclick="broadAdmin()" plain="true">用户推广</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="checkUserAccount()" plain="true">查看流水</a>
+		
+		
+				<div id="tb" style="float: right;padding-right: 100px;padding-top: 7px;">  
+                    <input id="ss" class="easyui-searchbox"  
+                        searcher="doSearch" prompt="请输入用户名"  
+                        style="width: 150px; vertical-align: middle;"></input>   
+                </div>  
+         
+</div>
+ <div id="dlg" class="easyui-dialog" style="width: 200px; height: 280px; padding: 10px 20px;"
+       closed="true" buttons="#dlg-buttons"> 
+       <div class="ftitle"> 
+           信息编辑 
+       </div> 
+       <form id="fm" method="post"> 
+	       <div class="fitem"> 
+	           <label> 
+	            ID    
+	           </label> 
+	           <input name="player_id" class="easyui-validatebox"  disabled="disabled"  required="true" style="width:100px" /> 
+	       </div> 
+	       <div class="fitem"> 
+	           <label> 
+	               账号</label> 
+	           <input name="name" class="easyui-validatebox" disabled="disabled"  required="true"  style="width:100px"/> 
+	       </div>
+	       <div class="fitem"> 
+	           <label> 
+	               号码</label> 
+	           <input name="phone" class="easyui-validatebox" disabled="disabled" required="true"  style="width:100px"/> 
+	       </div>
+	       <div class="fitem"> 
+	           <label> 
+	                积分</label> 
+	          <!--  <input name="points" class="easyui-validatebox" required="true" /> -->
+	           <input id = "points" name="points" class="easyui-numberspinner" style="width:100px;"required="required" increment=100 data-options="min:-1000000,max:1000000,editable:true">  
+	       </div> 
+	       <input type="hidden" name="action" id="hidtype" /> 
+	       <input type="hidden" name="ID" id="Nameid" /> 
+       </form> 
+   </div>
+    <div id="dlg-buttons"> 
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveuser()" iconcls="icon-save">保存</a> 
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg').dialog('close')"
+            iconcls="icon-cancel">取消</a> 
+    </div>
+    <script>
+        var url,rowName,rowPoints;
+        var balance;
+        var rowNewPoints;
+        var baseUrl = "http://106.75.133.210/manage/chargepoints?";
+        var broadUrl = "http://106.75.133.210/manage/listextdplayer?";
+        var guildid,name;
+        var addpoint;
+        var array;
+		var searchValue;
+        window.onload = function()
+        {
+        	 $('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', parent.ajaxData.result_value);
+		     $(".datagrid-view")[0].style.height="74%";
+		     $(".datagrid-view")[0].style.overflow="auto";
+		     $(".datagrid-view2")[0].style.paddingLeft="17px";
+		     $(".datagrid-view2")[1].style.paddingLeft="17px";
+        }
+		
+		function doSearch(value,name){ //用户输入用户名,点击搜素,触发此函数  
+			searchValue = value;
+			$('#dg').datagrid({loadFilter:filterByName}).datagrid('loadData', parent.ajaxData.result_value);
+		}  
+		function checkUserAccount()
+        {
+        	var row = $("#dg").datagrid("getSelected");
+	        if (row) 
+	        {
+				alert(row.player_id+":"+row.name);
+				
+	        	/*
+				"player_id": 8,
+				"name": "123",
+				"is_auth": 3,
+				"phone": "13423177825",
+				"points": 10700,
+				"extendcode": "1ki",
+				"guildid": 15
+				
+				guidid = row.guildid;//邀请码
+	        	name = row.name;
+	        	$.ajax({
+				type : "get",
+				url:broadUrl+"sessionid="+parent.arr[1].split("#")[0]+"&guildid="+guidid+"&name="+name+"&count=100&start=0",
+				cache : false,
+				dataType : 'json',
+				success : function(result) {
+					if (result.result_code == 10000) {
+	                    $.messager.alert("提示信息", "添加成功");
+	                    array = result.result_value
+	                    $("#dlgGH").dialog("close");
+	                    $("#dg2").datagrid("reload"); 
+	                    window.arrayAll = array; 
+	                    Window.arrayAll = array; 
+	                    window.localStorage.setItem('weekDay',JSON.stringify(array));
+	                    getAllPlayers(array);
+                	}
+	                else {
+	                    $.messager.alert("提示信息", "操作失败");
+	                }
+				},
+			});*/
+	        }
+        }
+		
+		
+        function broadAdmin()
+        {
+        	var row = $("#dg").datagrid("getSelected");
+	        if (row) 
+	        {
+	        	guidid = row.guildid;//邀请码
+	        	name = row.name;
+	        	$.ajax({
+				type : "get",
+				url:broadUrl+"sessionid="+parent.arr[1].split("#")[0]+"&guildid="+guidid+"&name="+name+"&count=100&start=0",
+				cache : false,
+				dataType : 'json',
+				success : function(result) {
+					if (result.result_code == 10000) {
+	                    $.messager.alert("提示信息", "添加成功");
+	                    array = result.result_value
+	                    /* $("#dlgGH").dialog("close");
+	                    $("#dg2").datagrid("reload"); */
+	                    window.arrayAll = array; 
+	                    Window.arrayAll = array; 
+	                    window.localStorage.setItem('weekDay',JSON.stringify(array));
+	                    getAllPlayers(array);
+                	}
+	                else {
+	                    $.messager.alert("提示信息", "操作失败");
+	                }
+				},
+			});
+	        }
+        }
+        function getAllPlayers(array)
+        {
+        	$("#playersBroaddg").datagrid({loadFilter:pagerFilter}).datagrid('loadData', array);
+        	/* $("#dlgBroadPlayers").dialog("open"); */	
+        }
+		
+		function filterByName(data){
+			if (typeof data.length == 'number' && typeof data.splice == 'function'){    // 判断数据是否是数组
+				
+				var filteredData = new Array();
+				for (var i=0;i<data.length;i++)
+				{
+					if(data[i].name.indexOf(searchValue) > -1)
+					{
+						filteredData.push(data[i]);
+					}
+				}
+				
+                data = {
+                    total: filteredData.length,
+                    rows: filteredData
+                }
+            }
+            var dg = $(this);
+            var opts = dg.datagrid('options');
+            var pager = dg.datagrid('getPager');
+            pager.pagination({
+                onSelectPage:function(pageNum, pageSize){
+                    opts.pageNumber = pageNum;
+                    opts.pageSize = pageSize;
+                    pager.pagination('refresh',{
+                        pageNumber:pageNum,
+                        pageSize:pageSize
+                    });
+                    dg.datagrid('loadData',data);
+                    $(".datagrid-view2")[0].style.paddingLeft="30px";
+		     		$(".datagrid-view2")[1].style.paddingLeft="30px";
+                }
+               
+            });
+            if (!data.originalRows){
+                data.originalRows = (data.rows);
+            }
+            var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
+            var end = start + parseInt(opts.pageSize);
+            data.rows = (data.originalRows.slice(start, end));
+            return data;
+        }
+		
+	    function pagerFilter(data){
+            if (typeof data.length == 'number' && typeof data.splice == 'function'){    // 判断数据是否是数组
+                data = {
+                    total: data.length,
+                    rows: data
+                }
+            }
+            var dg = $(this);
+            var opts = dg.datagrid('options');
+            var pager = dg.datagrid('getPager');
+            pager.pagination({
+                onSelectPage:function(pageNum, pageSize){
+                    opts.pageNumber = pageNum;
+                    opts.pageSize = pageSize;
+                    pager.pagination('refresh',{
+                        pageNumber:pageNum,
+                        pageSize:pageSize
+                    });
+                    dg.datagrid('loadData',data);
+                    $(".datagrid-view2")[0].style.paddingLeft="30px";
+		     		$(".datagrid-view2")[1].style.paddingLeft="30px";
+                }
+               
+            });
+            if (!data.originalRows){
+                data.originalRows = (data.rows);
+            }
+            var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
+            var end = start + parseInt(opts.pageSize);
+            data.rows = (data.originalRows.slice(start, end));
+            return data;
+        }
+        
+	    function edituser() {
+	        var row = $("#dg").datagrid("getSelected");
+	        if (row) {
+	        	rowPoints = row.points;
+	            $("#dlg").dialog("open").dialog('setTitle', '修改积分');
+	            row.points = 0;
+	            $("#fm").form("load", row); 
+	            rowName = row.name;
+	            /* rowPoints = row.points; */
+	        }
+    	}
+    	function saveuser() {
+    	/* if(rowPoints<parseInt($("#points")[0].value))
+	            {
+	            	balance = parseInt($("#points")[0].value)-rowPoints;
+	            }
+	            else
+	            {
+	            	balance =-(rowPoints-parseInt($("#points")[0].value));
+	            } */
+	        addpoint = parseInt($("#points")[0].value);
+	        $.ajax({
+					type : "get",
+					url:baseUrl+"sessionid="+parent.arr[1].split("#")[0]+"&name="+rowName+"&point="+addpoint+"",
+					cache : false,
+					dataType : 'json',
+					success : function(result) {
+						if (result.result_code == 10000) {
+		                    $.messager.alert("提示信息", result.result_message);
+		                    $("#dlg").dialog("close");
+		                    $("#dg").datagrid("load");
+		                    $("#dg").datagrid("reload");
+		                     for(var i = 0 ;i<$(".datagrid-row").length;i++)
+		                    {
+		                    	if($(".datagrid-row")[i].className.indexOf("datagrid-row-selected")>0)
+		                    	{
+			                    	  indexNumber = i;
+			                    	  break;
+		                    	}
+		                    }
+		                    $('#dg').datagrid('updateRow',{
+								index: indexNumber,
+								row: {
+									points: rowPoints+addpoint
+								}
+							});
+	                	}
+		                else {
+		                    $.messager.alert("提示信息", "操作失败");
+		                }
+					},
+			});
+    	}
+    </script>
+</body>
+</html>
+
+

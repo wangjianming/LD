@@ -1,0 +1,231 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+    <title>编号查询</title>
+    <link rel="stylesheet" href="../../css/easyui/gray/easyui.css"/>
+    <link rel="stylesheet" href="../../css/easyui/icon.css"/>
+    <style type="text/css">
+        td {
+            font-size:12px;
+        }
+        .id {
+            color: #C63F05;
+            font-weight: bold;
+            text-align:center;
+            background-image:url(../../image/id1.gif);
+            background-repeat:no-repeat;
+            background-position:center;
+        }
+        body {
+            width:100%;
+            height: 100%;
+            background-color: #FFFFFF;
+            overflow: hidden;
+            text-align: center;
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
+        }
+        a{
+            color: red;
+            text-decoration: underline;
+        }
+    </style>
+    <script src="../../easyui/jquery.min.js"></script>
+    <script src="../../easyui/jquery.easyui.min.js"></script>
+    <script src="../../js/lib/jquery.xml2json.js"></script>
+    <script>
+        var lampArrObj={};
+        var treeData=[];
+        var lamplength=0;
+        var earth=parent.earth;
+        var pageRecordCount = 20;
+	    var result = parent.searchResult;
+	    var bhattributes=[];
+        $(function(){  
+            $("#searchBtn").click(function(){
+                clearPage();
+	            var param = $("#searchkey").val();
+	            var result=[];
+	            var IndexSearchUrl=parent.STAMP_config.itemurl.baseurl+"&outFields=*&where=Fiel_Seri_Code+like+%27%25"+param+"%25%27&callback=?";
+	            $.ajax({
+				     method:"post",
+				     url : IndexSearchUrl,
+					 dataType : "jsonp",
+					 success : function(res) 
+					     {  
+						   for (var i = 0; i < res.features.length; i++){
+				               var xx=res.features[i].geometry.x;
+							   var yy=res.features[i].geometry.y;
+						       var name = res.features[i].attributes["Name"];
+				               var wylsh = res.features[i].attributes["Fiel_Seri_Code"];
+				               var temp={
+				               "xx":xx,
+				               "yy":yy,
+				               "name":name,
+				               "wylsh":wylsh
+				               };
+				               result.push(temp);
+				               bhattributes.push(res.features[i].attributes);
+						 	}
+				          createResult(result);
+				          searchPage(result, 1);			    
+				         }
+				     });
+            });
+            window.onunload = function(){
+            };
+            $("#searchData").attr("style","height:"+(720-((1080-window.screen.height)*11/12))+"px;");
+});
+var createResult = function(elements) {
+	var totalPageNum = Math.ceil(elements.length / pageRecordCount);
+	if (totalPageNum == 0) {
+		totalPageNum = 1;
+	}
+	$("#page").pagination({
+		total : elements.length,//总的记录数
+		pageSize : pageRecordCount,//每页显示的大小。
+		showPageList : false,
+		showRefresh : false,
+		displayMsg : "",
+		beforePageText : "",
+		afterPageText : "/" + totalPageNum,
+		//pageList: [10,20,50,100],//选择每页显示的记录数的下拉框的值。
+		onSelectPage : function(pageNumber, ps) {//选择相应的页码时刷新显示内容列表。
+			searchPage(elements, pageNumber);
+		}
+	});
+}; 
+var clearPage=function(){
+    document.getElementById("searchData").innerHTML = "";
+    $("#page").pagination({
+		total : 0,//总的记录数
+		pageSize : 1,//每页显示的大小。
+		showPageList : false,
+		showRefresh : false,
+		displayMsg : "",
+		beforePageText : "",
+		afterPageText : "/" + 1,
+		//pageList: [10,20,50,100],//选择每页显示的记录数的下拉框的值。
+		onSelectPage : function(pageNumber, ps) {//选择相应的页码时刷新显示内容列表。
+		}
+	});
+};
+function searchPage(elements, pageNumber) {
+	document.getElementById("searchData").innerHTML = "";
+	var htmlStr = '<table id="tbtrcontrol" style="width:100%;color:black" ><tr><th style="text-align:left;">序号</th>';
+	htmlStr += '<th style="text-align:left">名称</th>';
+    htmlStr += '<th>编号</th></tr>';
+	var totalPageNum = Math.ceil(elements.length / pageRecordCount);
+	var startindex,endindex;
+	startindex=(pageNumber-1)*pageRecordCount;
+	endindex=pageNumber*pageRecordCount;
+	if(pageNumber ==totalPageNum)
+	    endindex=elements.length;
+	for ( var i = startindex; i <endindex; i++) {
+		var xx = elements[i].xx;
+		var yy = elements[i].yy;
+		var name=elements[i].name;
+		var wylsh=elements[i].wylsh;
+		var ssdl=elements[i].ssdl;
+		htmlStr = htmlStr + '<tr style="CURSOR: hand" tr_id="'+ i +'">';
+		 htmlStr = htmlStr
+				+ '<td width="50" height="25" class="nowrap" ><font color="black">'
+				+ (i + 1) + '</font></td>';//序号 
+		htmlStr = htmlStr
+				+ '<td width="50" height="25" class="nowrap" ><font color="black">'
+				+ name + '</font></td>';//名称
+		htmlStr = htmlStr
+				+ '<td width="55" height="25" class="nowrap" ><font color="black">'
+				+ wylsh + '</font></td>';//编号
+	   /*  htmlStr = htmlStr
+				+ '<td width="25" height="25" class="nowrap" ><font color="black">'
+				+ ssdl + '</font></td>'; */
+		htmlStr = htmlStr + '</tr>';
+	}
+	htmlStr = htmlStr + '</table>';
+	document.getElementById("searchData").innerHTML = htmlStr;
+	$("#tbtrcontrol tr").dblclick(function(){
+	    var i = $(this).attr("tr_id");
+	    var temp={};
+	    temp.X=elements[i].xx;
+	    temp.Y=elements[i].yy;
+	    var dataNode=null;
+	    var wylsh = elements[i].wylsh;
+	    for(var i =0; i<bhattributes.length;i++){
+		    if(wylsh==bhattributes[i]["Fiel_Seri_Code"]){
+		       dataNode=bhattributes[i];
+		       break;
+		    }
+	    }
+	    
+	    parent.matchModel.highLightMatchObject("路灯",wylsh,temp,dataNode);
+	});
+}
+</script>
+</head>
+<body>
+<object id="dataProcess" classid="clsid:DDA7E893-8EEE-4A1E-A506-867932BD0FB9" style="display:none;"></object>
+<div class="easyui-tree" id="myTree" fit="true" border="false">
+<table width="100%"  cellspacing="0" cellpadding="0" border="0">
+    <tr>
+        <td align="center" valign="top" id="td_keyword" name="td_keyword">
+            <fieldset style="width:196px;height: 72px" align="center">
+                <table style="width: 196px;">
+                    <tr>
+                        <td align="left" id="layerTd" >  </td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="middle" >
+                                                                          路灯编号：
+                            <input id="searchkey" name="searchkey" type="text" value=""  onFocus="focusindex = 1" onBlur="focusindex =0" style="width:100px">
+                            <img src="../../images/search/search.gif" name="searchBtn" width="24" height="24" align="absmiddle" id="searchBtn" style="cursor:hand" >
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="1" style="background:url(../../images/dot.gif) repeat-x;"></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <input id="search_info" type="checkbox"/>详细信息
+                           <!-- <input id="search_tips" type="checkbox" disabled >Tips-->
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </td>
+    </tr>
+    <tr>
+        <td height="15" align="left" id="result_count">
+        &nbsp;&nbsp;搜索结果:
+        </td>
+    </tr>
+    <tr>
+        <td align="center" valign="top">
+            <table id="tab_search" style="width: 210px;" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="4" height="4" align="left" valign="top"><img src="../../images/horn_01.gif" width="4" height="4" /></td>
+                    <td height="4" valign="top" background="../../images/top_bg.gif"><img src="../../images/top_bg.gif" width="1" height="4" /></td>
+                    <td width="4" height="4"><img src="../../images/horn_02.gif" width="4" height="4" /></td>
+                </tr>
+                <tr>
+                    <td valign="top" background="../../images/left_bg.gif"><img src="../../images/left_bg.gif" width="4" height="1" /></td>
+                    <td bgcolor="#FFFFFF">
+                        <div id="searchData" style="height:200px;overflow:scroll;"></div>
+                        <div id="pageDiv" align="center" style="font-size: 10px;height: 20px;">
+                           <div id="page" style="border:2px solid #ddd;margin-bottom: 1px;"></div>
+                        </div>
+                    </td>
+                    <td valign="top" background="../../images/right_bg.gif"><img src="images/right_bg.gif" width="4" height="1" /></td>
+                </tr>
+                <tr>
+                    <td width="4" height="4"><img src="../../images/horn_03.gif" width="4" height="4" /></td>
+                    <td valign="top" background="../../images/bottom_bg.gif"><img src="../../images/bottom_bg.gif" width="1" height="4" /></td>
+                    <td width="4" height="4"><img src="../../images/horn_04.gif" width="4" height="4" /></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</div>
+</body>
+</html>

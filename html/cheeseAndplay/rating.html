@@ -1,0 +1,104 @@
+<html style="overflow-y: hidden;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+    <script type="text/javascript" src="../../easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="../../easyui/jquery.easyui.min.js"></script>
+	 <link rel="stylesheet" type="text/css" href="../../easyui/themes/default/easyui.css">
+	 <link rel="stylesheet" type="text/css" href="../../easyui/themes/icon.css">
+	 <link rel="stylesheet" type="text/css" href="../../css/common.css">
+	 <link rel="stylesheet" type="text/css" href="../../css/index.css">
+	 <link rel="stylesheet" type="text/css" href="../../css/style1.css">
+	 <script type="text/javascript" src="../../js/index1.js"></script>
+	<!--  <script type="text/javascript" src="../../js/players.js"></script> -->
+</head>
+
+<style>
+body {
+    display: block;
+    margin: 0px;
+}
+     #fm 
+        { 
+            margin: 0; 
+            padding: 10px 30px; 
+        } 
+        .ftitle 
+        { 
+            font-size: 14px; 
+            font-weight: bold; 
+            padding: 5px 0; 
+            margin-bottom: 10px; 
+            border-bottom: 1px solid #ccc; 
+        } 
+        .fitem 
+        { 
+            margin-bottom: 5px; 
+        } 
+        .fitem label 
+        { 
+            display: inline-block; 
+            width: 80px; 
+        } 
+</style>
+<body>
+<table id="playersBroaddg" title="用户推广" class="easyui-datagrid"  toolbar="#toolbarbroad" pagination="true" rownumbers="true" pagenumber=1  pageSize = 10 fitcolumns="true" singleselect="true" style='overflow:"auto"'>
+		        <thead>
+		            <tr>
+		                <th field="player_id" width="25">
+		            	ID
+		                </th>
+		                <th field="name" width="35">
+		                                         账号
+		                </th>
+		                <th field="phone" width="60">
+		                                       手机号
+		                </th>
+		               <th field="points" width="25">
+		                                         点数
+		                </th>
+		            </tr>
+		        </thead>
+	</table>
+</body>
+<script>
+ window.onload = function()
+  {
+   	var weekArray = JSON.parse(window.localStorage.getItem('weekDay'));
+  	$("#playersBroaddg").datagrid({loadFilter:pagerFilter}).datagrid('loadData', weekArray);
+  }
+   function pagerFilter(data){
+            if (typeof data.length == 'number' && typeof data.splice == 'function'){    // 判断数据是否是数组
+                data = {
+                    total: data.length,
+                    rows: data
+                }
+            }
+            var dg = $(this);
+            var opts = dg.datagrid('options');
+            var pager = dg.datagrid('getPager');
+            pager.pagination({
+                onSelectPage:function(pageNum, pageSize){
+                    opts.pageNumber = pageNum;
+                    opts.pageSize = pageSize;
+                    pager.pagination('refresh',{
+                        pageNumber:pageNum,
+                        pageSize:pageSize
+                    });
+                    dg.datagrid('loadData',data);
+                    $(".datagrid-view2")[0].style.paddingLeft="30px";
+		     		$(".datagrid-view2")[1].style.paddingLeft="30px";
+                }
+               
+            });
+            if (!data.originalRows){
+                data.originalRows = (data.rows);
+            }
+            var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
+            var end = start + parseInt(opts.pageSize);
+            data.rows = (data.originalRows.slice(start, end));
+            return data;
+        }
+</script>
+</html>
+
+

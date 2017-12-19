@@ -1,0 +1,367 @@
+<html style="overflow-y: hidden;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+    <script type="text/javascript" src="../../easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="../../easyui/jquery.easyui.min.js"></script>
+	 <link rel="stylesheet" type="text/css" href="../../easyui/themes/default/easyui.css">
+	  <link rel="stylesheet" type="text/css" href="../../easyui/themes/icon.css">
+	  <link rel="stylesheet" type="text/css" href="../../css/common.css">
+	  <link rel="stylesheet" type="text/css" href="../../css/index.css">
+	  <link rel="stylesheet" type="text/css" href="../../css/style1.css">
+	<!-- <script type="text/javascript" src="../../js/dialog.js"></script> -->
+	 <script type="text/javascript" src="../../js/index1.js"></script>
+</head>
+<style>
+     #fm 
+        { 
+            margin: 0; 
+            padding: 10px 30px; 
+        } 
+        .ftitle 
+        { 
+            font-size: 14px; 
+            font-weight: bold; 
+            padding: 5px 0; 
+            margin-bottom: 10px; 
+            border-bottom: 1px solid #ccc; 
+        } 
+        .fitem 
+        { 
+            margin-bottom: 5px; 
+        } 
+        .fitem label 
+        { 
+            display: inline-block; 
+            width: 80px; 
+        } 
+body {
+    display: block;
+    margin: 0px;
+}
+</style>
+<body>
+ <div id="dlgPlayers" class="easyui-dialog" style="width: 252px; height: 320px;display:block"
+       closed="true" buttons="#dlg-buttons"> 
+	<table id="playersAdmindg" title="玩家权限" class="easyui-datagrid"  toolbar="#toolbarUp" pagination="true" rownumbers="true" pagenumber=1  pageSize = 10 fitcolumns="true" singleselect="true" style='overflow:"auto"'>
+		        <thead>
+		            <tr>
+		                <th field="player_id" width="25">
+		            	ID
+		                </th>
+		                <th field="name" width="35">
+		                                         账号
+		                </th>
+		                <th field="phone" width="60">
+		                                       手机号
+		                </th>
+		               <th field="points" width="25">
+		                                         点数
+		                </th>
+		            </tr>
+		        </thead>
+	</table>
+</div>
+<table id="dg2" title="工会管理" class="easyui-datagrid" data-options="rownumbers:true,singleSelect:true,autoRowHeight:false,pagination:true,pageSize:10"  toolbar="#toolbar" pagination="true" rownumbers="true" fitcolumns="true" singleselect="true" pagenumber=1  style= "overflow:'scroll'">
+	        <thead>
+	            <tr>
+	                <th field="guildid" width="25">
+	            	ID
+	                </th>
+	                <th field="invitecode" width="35">
+	                                          邀请码
+	                </th>
+	               <th field="points" width="25">
+	                                        点数
+	                </th>
+	                 <th field="manager" width="25">
+	                                        管理员
+	                </th>
+	            </tr>
+	        </thead>
+</table>
+<div id="toolbarUp">
+       <!--  <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" onclick="newuser()" plain="true">添加</a> 
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" onclick="edituser()" plain="true">修改</a> 
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove" onclick="destroyUser()" plain="true">删除</a> -->
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" onclick="upAdmin()" plain="true">升级管理员</a>
+</div>
+<div id="toolbar">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" onclick="newuser()" plain="true">添加</a> 
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" onclick="edituser()" plain="true">修改积分</a> 
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove" onclick="destroyUser()" plain="true">删除</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" onclick="addAdmin()" plain="true">添加管理员</a>
+</div>
+   <div id="dlgGH" class="easyui-dialog" style="width: 200px; height: 180px; padding: 10px 20px;"
+       closed="true" buttons="#dlgGH-buttons"> 
+       <div class="ftitle"> 
+           信息编辑 
+       </div> 
+       <form id="GH" method="post"> 
+	      <!--  <div class="fitem"> 
+	           <label> 
+	            ID    
+	           </label> 
+	           <input id = "guildid" name="guildid" class="easyui-validatebox" required="true" style="width:100px"/> 
+	       </div>  -->
+	      <!--  <div class="fitem"> 
+	           <label> 
+	               邀请码</label> 
+	           <input id="invitecode" name="invitecode" class="easyui-validatebox" required="true" style="width:100px" /> 
+	       </div>  -->
+	       <div class="fitem"> 
+	           <label> 
+	                积分</label> 
+	           <input id = "pointsGH" name="points" class="easyui-numberspinner" style="width:100px;"required="required" increment=1000 value=10000 data-options="min:-5000000,max:500000,editable:true">  
+	       </div> 
+	       <input type="hidden" name="action" id="hidtype" /> 
+	       <input type="hidden" name="ID" id="Nameid" /> 
+       </form> 
+   </div>
+   <div id="dlg" class="easyui-dialog" style="width: 200px; height: 280px; padding: 10px 20px;"
+       closed="true" buttons="#dlg-buttons"> 
+       <div class="ftitle"> 
+           信息编辑 
+       </div> 
+       <form id="fmGH" method="post"> 
+	       <div class="fitem"> 
+	           <label> 
+	            ID    
+	           </label> 
+	           <input id = "guildid" name="guildid" disabled="disabled"  class="easyui-validatebox" required="true" style="width:100px"/> 
+	       </div> 
+	       <div class="fitem"> 
+	           <label> 
+	               邀请码</label> 
+	           <input id="invitecode" name="invitecode" disabled="disabled"  class="easyui-validatebox" required="true" style="width:100px" /> 
+	       </div> 
+	       <div class="fitem"> 
+	           <label> 
+	                积分</label> 
+	           <input id = "points" name="points" class="easyui-numberspinner" style="width:100px;"required="required" increment=100 value=0 data-options="min:0,max:10000000,editable:true">  
+	       </div> 
+	       <input type="hidden" name="action" id="hidtype" /> 
+	       <input type="hidden" name="ID" id="Nameid" /> 
+       </form> 
+   </div>
+    <div id="dlg-buttons"> 
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveuser()" iconcls="icon-save">保存</a> 
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg').dialog('close')"
+            iconcls="icon-cancel">取消</a> 
+    </div>
+    <div id="dlgGH-buttons"> 
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveuserGH()" iconcls="icon-save">保存</a> 
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlgGH').dialog('close')"
+            iconcls="icon-cancel">取消</a> 
+    </div>
+    <script>
+   
+        var balance,indexNumber,url,rowName,rowPoints,rowNewPoints;
+        var baseUrl = "http://106.75.133.210/manage/updateguildpoints?";
+        var addUserUrl = "http://106.75.133.210/manage/createguild?";
+        var points;
+        var opts,upguidid,upName;
+        var upAdminUrl = "http://106.75.133.210/manage/listPlayersByGuildid?";
+        var upDataUrl = "http://106.75.133.210/manage/updatemanager?";
+        var addpoint;
+        window.onload = function()
+        {
+        	 opts = $('#dg2').datagrid('options');
+        	 /* $('#dg2').datagrid("loadData", parent.ajaxDataGH.result_value); */
+        	 $('#dg2').datagrid({loadFilter:pagerFilter}).datagrid('loadData', parent.ajaxDataGH.result_value);
+		     $(".datagrid-view")[0].style.height="74%";
+		     $(".datagrid-view")[0].style.overflow="auto"; 
+		     $(".datagrid-view2")[0].style.paddingLeft="17px";
+		     $(".datagrid-view2")[1].style.paddingLeft="17px";
+        }
+        function pagerFilter(data){
+            if (typeof data.length == 'number' && typeof data.splice == 'function'){    // 判断数据是否是数组
+                data = {
+                    total: data.length,
+                    rows: data
+                }
+            }
+            var dg = $(this);
+            var opts = dg.datagrid('options');
+            var pager = dg.datagrid('getPager');
+            pager.pagination({
+                onSelectPage:function(pageNum, pageSize){
+                    opts.pageNumber = pageNum;
+                    opts.pageSize = pageSize;
+                    pager.pagination('refresh',{
+                        pageNumber:pageNum,
+                        pageSize:pageSize
+                    });
+                    dg.datagrid('loadData',data);
+                    $(".datagrid-view2")[0].style.paddingLeft="30px";
+		        	$(".datagrid-view2")[1].style.paddingLeft="30px";
+                }
+                
+            });
+            if (!data.originalRows){
+                data.originalRows = (data.rows);
+            }
+            var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
+            var end = start + parseInt(opts.pageSize);
+            data.rows = (data.originalRows.slice(start, end));
+            return data;
+        }
+        function upAdmin()
+        {
+        	var row = $("#playersAdmindg").datagrid("getSelected");
+	        if (row) 
+	        {
+	        	upguidid = row.guildid;//邀请码
+	        	upName = row.name;
+	        	$.ajax({
+				type : "get",
+				url:upDataUrl+"sessionid="+parent.arr[1].split("#")[0]+"&guildid="+upguidid+"&name="+upName+"",
+				cache : false,
+				dataType : 'json',
+				success : function(result) {
+					if (result.result_code == 10000) {
+	                   $.messager.alert("提示信息", "升级成功");
+	                   $("#dlgPlayers").dialog("close");
+	                   /*  var arrayData = result.result_value;
+	                    getPlayers(arrayData); */
+                	}
+	                else {
+	                    $.messager.alert("提示信息", "非普通用户类型，请重新填写");
+	                }
+				},
+			});
+	        }
+        }
+        function addAdmin()
+        {
+        	var row = $("#dg2").datagrid("getSelected");
+	        if (row) 
+	        {
+	        	guidid = row.guildid;//邀请码
+	        	$.ajax({
+				type : "get",
+				url:upAdminUrl+"sessionid="+parent.arr[1].split("#")[0]+"&guildid="+guidid+"&&count=100&start=0",
+				cache : false,
+				dataType : 'json',
+				success : function(result) {
+					if (result.result_code == 10000) {
+	                   /*  $.messager.alert("提示信息", "添加成功"); */
+	                    var arrayData = result.result_value;
+	                    /* $("#dlgGH").dialog("close");
+	                    $("#dg2").datagrid("reload"); */
+	                    getPlayers(arrayData);
+	                
+                	}
+	                else {
+	                    $.messager.alert("提示信息", "操作失败");
+	                }
+				},
+			});
+	        }
+        }
+        function getPlayers(arrayData)
+        {
+            $("#playersAdmindg").datagrid({loadFilter:pagerFilter}).datagrid('loadData', arrayData);
+        	$("#dlgPlayers").dialog("open");
+        	
+        }
+	    function edituser() {
+	      var row = $("#dg2").datagrid("getSelected");
+	        if (row) {
+	        	rowPoints = row.points;
+	            $("#dlg").dialog("open").dialog('setTitle', '修改积分');
+	            row.points = 0;
+	            $("#fmGH").form("load", row);
+	            rowName = row.guildid;
+	        }
+    	}
+    /* http://106.75.133.210/manage/createguild?sessionid=c1c46c52-e255-4f8e-9466-175742f69731&points=100000 */
+    function newuser() {
+    	$("#dlgGH").dialog("open").dialog('setTitle', '添加公会');
+		/* saveuserGH(); */
+	} 
+	function saveuserGH()
+	{
+		 points = $("#pointsGH").val();
+		 $.ajax({
+				type : "get",
+				url:addUserUrl+"sessionid="+parent.arr[1].split("#")[0]+"&points="+points+"",
+				cache : false,
+				dataType : 'json',
+				success : function(result) {
+					if (result.result_code == 10000) {
+	                    $.messager.alert("提示信息", "添加成功");
+	                    $("#dlgGH").dialog("close");
+	                    $("#dg2").datagrid("reload");
+	                    //此处再取一次数据从后台重现刷新列表
+	                    refreshList();
+                	}
+	                else {
+	                    $.messager.alert("提示信息", "操作失败");
+	                }
+				},
+			});
+	}
+	function refreshList()
+	{
+		$.ajax({
+             url: parent.listPlayersUrlGH+"sessionid="+parent.arr[1].split("#")[0]+"&start=0&count=100&start=0",
+             type: "get",
+             dataType: "json",
+             success: function (data) {
+            	 ajaxDataGH = data;
+            	 $('#dg2').datagrid({loadFilter:pagerFilter}).datagrid('loadData', data.result_value); 
+             },
+             error:function(result) {
+            	 alert("Sorry，I can not get the feed"); 
+            } 
+         });
+		
+	}
+    function saveuser() {
+   			/* if(rowPoints<parseInt($("#points")[0].value))
+            {
+            	balance = parseInt($("#points")[0].value)-rowPoints;
+            }
+            else
+            {
+            	balance =-(rowPoints-parseInt($("#points")[0].value));
+            } */
+   			addpoint = parseInt($("#points")[0].value);
+	        $.ajax({
+					type : "get",
+					url:baseUrl+"sessionid="+parent.arr[1].split("#")[0]+"&guildid="+rowName+"&points="+addpoint+"",
+					cache : false,
+					dataType : 'json',
+					success : function(result) {
+						if (result.result_code == 10000) {
+		                    $.messager.alert("提示信息", result.result_message);
+		                    $("#dlg").dialog("close");
+		                   /*  $("#dg2").datagrid("load"); */
+		                    $("#dg2").datagrid("reload");
+		                    $('#dg2').datagrid("reload");
+		                    for(var i = 0 ;i<$(".datagrid-row").length;i++)
+		                    {
+		                    	if($(".datagrid-row")[i].className.indexOf("datagrid-row-selected")>0)
+		                    	{
+			                    	  indexNumber = i;
+			                    	  break;
+		                    	}
+		                    }
+		                    $('#dg2').datagrid('updateRow',{
+								index: indexNumber,
+								row: {
+									points: rowPoints+addpoint
+								}
+							});
+	                	}
+		                else {
+		                    $.messager.alert("提示信息", "操作失败");
+		                }
+					},
+			});
+    	}
+    </script>
+</body>
+</html>
+
+

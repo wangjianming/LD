@@ -1,0 +1,207 @@
+<html style="overflow-y: hidden;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+    <script type="text/javascript" src="../../easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="../../easyui/jquery.easyui.min.js"></script>
+	 <link rel="stylesheet" type="text/css" href="../../easyui/themes/default/easyui.css">
+	 <link rel="stylesheet" type="text/css" href="../../easyui/themes/icon.css">
+	 <link rel="stylesheet" type="text/css" href="../../css/common.css">
+	 <link rel="stylesheet" type="text/css" href="../../css/index.css">
+	 <link rel="stylesheet" type="text/css" href="../../css/style1.css">
+	<!--  <script type="text/javascript" src="../../js/dialog.js"></script> -->
+	 <script type="text/javascript" src="../../js/index1.js"></script>
+</head>
+
+<style>
+body {
+    display: block;
+    margin: 0px;
+}
+     #fm 
+        { 
+            margin: 0; 
+            padding: 10px 30px; 
+        } 
+        .ftitle 
+        { 
+            font-size: 14px; 
+            font-weight: bold; 
+            padding: 5px 0; 
+            margin-bottom: 10px; 
+            border-bottom: 1px solid #ccc; 
+        } 
+        .fitem 
+        { 
+            margin-bottom: 5px; 
+        } 
+        .fitem label 
+        { 
+            display: inline-block; 
+            width: 80px; 
+        } 
+</style>
+<body>
+
+<table id="dg" title="赔率设置" class="easyui-datagrid"  toolbar="#toolbar1" pagination="true" rownumbers="true" pagenumber=1  pageSize = 10 fitcolumns="true" singleselect="true" style='overflow:"auto"'>
+	        <thead>
+	            <tr>
+	                <th field="id" width="25">
+						ID
+	                </th>
+	                <th field="odddesc" width="35">
+						竞猜项目
+	                </th>
+	                <th field="configvalue" width="60">
+	                    赔率值
+	                </th>
+	            </tr>
+	        </thead>
+</table>
+
+<div id="toolbar1">
+        <!-- <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" onclick="newuser()" plain="true">添加</a>  -->
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" onclick="edituser()" plain="true">修改</a> 
+</div>
+  <div id="dlg" class="easyui-dialog" style="width: 200px; height: 280px; padding: 10px 20px;"
+       closed="true" buttons="#dlg-buttons"> 
+       <div class="ftitle"> 
+           信息编辑 
+       </div> 
+       <form id="fm" method="post"> 
+	       <div class="fitem"> 
+	           <label> 
+	            ID    
+	           </label> 
+	           <input name="id" class="easyui-validatebox"  disabled="disabled"  required="true" style="width:100px" /> 
+	       </div> 
+	       <div class="fitem"> 
+	           <label> 
+	               	
+				竞猜项目</label> 
+	           <input name="odddesc" class="easyui-validatebox" disabled="disabled"  required="true"  style="width:100px"/> 
+	       </div>
+	       <div class="fitem"> 
+	           <label> 
+	               赔率值</label> 
+	           <input id="newValue"  name="configvalue" class="easyui-validatebox" required="true"  style="width:100px"/> 
+	       </div>
+       </form> 
+   </div>
+    <div id="dlg-buttons"> 
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveuser()" iconcls="icon-save">保存</a> 
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg').dialog('close')"
+            iconcls="icon-cancel">取消</a> 
+    </div>
+    <script>
+        var url,rowID,rowValue;
+        var balance;
+        var rowNewPoints;
+        var baseUrl = "http://106.75.133.210/manage/chargepoints?";
+        var broadUrl = "http://106.75.133.210/manage/listextdplayer?";
+        var guildid,name;
+        var newValue;
+        var array;
+        window.onload = function() 
+        {
+		
+		
+		 
+		 
+        $('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', parent.getoddData);
+
+        }
+        
+	    function pagerFilter(data){
+            if (typeof data.length == 'number' && typeof data.splice == 'function'){    // 判断数据是否是数组
+                data = {
+                    total: data.length,
+                    rows: data
+                }
+            }
+            var dg = $(this);
+            var opts = dg.datagrid('options');
+            var pager = dg.datagrid('getPager');
+            pager.pagination({
+                onSelectPage:function(pageNum, pageSize){
+                    opts.pageNumber = pageNum;
+                    opts.pageSize = pageSize;
+                    pager.pagination('refresh',{
+                        pageNumber:pageNum,
+                        pageSize:pageSize
+                    });
+                    dg.datagrid('loadData',data);
+                    $(".datagrid-view2")[0].style.paddingLeft="30px";
+		     		$(".datagrid-view2")[1].style.paddingLeft="30px";
+                }
+               
+            });
+            if (!data.originalRows){
+                data.originalRows = (data.rows);
+            }
+            var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
+            var end = start + parseInt(opts.pageSize);
+            data.rows = (data.originalRows.slice(start, end));
+            return data;
+        }
+        
+	    function edituser() {
+	        var row = $("#dg").datagrid("getSelected");
+			//alert(row);
+	        if (row) {
+	            $("#dlg").dialog("open").dialog('setTitle', '修改赔率');
+	            $("#fm").form("load", row); 
+	            rowID = row.id;
+				rowValue = row.configvalue;
+	            /* rowPoints = row.points; */
+	        }
+    	}
+    	function saveuser() {
+
+		newValue = $("#newValue")[0].value;
+    	/* if(rowPoints<parseInt($("#points")[0].value))
+	            {
+	            	balance = parseInt($("#points")[0].value)-rowPoints;
+	            }
+	            else
+	            {
+	            	balance =-(rowPoints-parseInt($("#points")[0].value));
+	            } */
+
+	        $.ajax({
+					type : "get",
+					//url:baseUrl+"sessionid="+parent.arr[1].split("#")[0]+"&name="+rowName+"&point="+addpoint+"",
+					url:"http://106.75.133.210/guess/mdfodd?"+"sessionid="+parent.arr[1].split("#")[0]+"&id="+rowID+"&value="+newValue+"",
+					cache : false,
+					dataType : 'json',
+					success : function(result) {
+						if (result.result_code == 10000) {
+		                    $.messager.alert("提示信息", result.result_message);
+		                    $("#dlg").dialog("close");
+		                    $("#dg").datagrid("load");
+		                    $("#dg").datagrid("reload");
+		                     for(var i = 0 ;i<$(".datagrid-row").length;i++)
+		                    {
+		                    	if($(".datagrid-row")[i].className.indexOf("datagrid-row-selected")>0)
+		                    	{
+			                    	  indexNumber = i;
+			                    	  break;
+		                    	}
+		                    }
+		                    $('#dg').datagrid('updateRow',{
+								index: indexNumber,
+								row: {
+									configvalue: newValue
+								}
+							});
+	                	}
+		                else {
+		                    $.messager.alert("提示信息", "操作失败");
+		                }
+					},
+			});
+    	}
+    </script>
+</body>
+</html>
+
+

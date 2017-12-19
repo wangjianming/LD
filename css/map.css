@@ -1,0 +1,198 @@
+#mapswitch {
+	position: absolute;
+	top: 100px;
+	right: 20px;
+	z-index: 1;
+	float: right;
+}
+
+.thumbnail {
+	background-color: grey;
+	z-index: 1;
+}
+
+.hidenail {
+	display: none;
+}
+
+.esriLargeSliderVertical {
+	bottom: 20px;
+	right: 20px;
+}
+
+.scalebar_bottom-left {
+	bottom: 55px !important;
+	left: 30px !important;
+}
+
+.esriOverviewMap {
+	bottom: 50px !important;
+}
+
+.esriOverviewMap .ovwHighlight {
+	background-color: yellow !important;
+}
+
+.maximize {
+	display: none;
+}
+
+.richtext {
+	white-space: nowrap;
+	text-align: left;
+	overflow: visible;
+	position: absolute;
+	letter-spacing: -0.1em;
+	line-height: 100%;
+	font-family: "微软雅黑";
+	font-size: 14;
+	font-color: #606060;
+	font-weight: bold;
+	padding: 5px;
+}
+/* 
+#mapToolBarDiv {
+	position: absolute;
+	top: 0px;
+	height: 30px;
+	width: 100%;
+	FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,
+		startColorStr=#b8e0fd, endColorStr=#1ca4f7 );
+	IE background: -o-linear-gradient(top, #b8c4cb, #1ca4f7);
+	background: -moz-linear-gradient(top, #b8c4cb, #1ca4f7);
+	background: -webkit-gradient(linear, 00% 0%, 0% 100%, from(#b8e0fd),
+		to(#1ca4f7) );
+	border-bottom: 1 solid #b5bcc7;
+	background-image: none;
+	border: 1 solid #95b8e7;
+	z-index: 10;
+}
+
+#mapOperationDiv {
+	float: right;
+	height: 30px;
+	z-index: 30;
+}
+
+.iconButton {
+	border: 1px;
+	border-radius: 3px;
+	cursor: pointer;
+	height: 24px;
+	width: 24px;
+	padding: 0px;
+	margin-right: 3px;
+	margin-top: 1px;
+	background-position: center center;
+	float: left;
+}
+
+.iconButton:HOVER {
+	border: 1px solid #888888;
+	padding: -2px;
+	background-color: menu;
+}
+
+.iconSplitter {
+	cursor: default;
+	height: 26px;
+	width: 2px;
+	padding: 0px;
+	margin-right: 3px;
+	margin-left: 1px;
+	margin-top: 1px;
+	background-position: center center;
+	float: left;
+	background-color: lightgray;
+}
+
+.mapSearchBox {
+	position: absolute;
+	left: 10px;
+	top: 3px;
+	width: 150px;
+	height: 18px;
+}
+
+#mapSearchBtn:HOVER {
+	border: 1px solid #888888;
+}
+
+#mapSearchBtn {
+	background-image: url("../images/toolbar/GenericSearch16.png");
+	background-repeat: no-repeat;
+	border-radius: 3px;
+	position: absolute;
+	left: 160px;
+	top: 0px;
+	cursor: pointer;
+	height: 24px;
+	width: 24px;
+	padding: 0px;
+	margin: 2px;
+	background-position: center center;
+	float: left;
+	cursor: pointer;
+}
+
+#mapZoomInToolBtn {
+	background-image: url("../images/toolbar/ZoomInTool_B_16.png");
+	background-repeat: no-repeat;
+}
+
+#mapZoomOutToolBtn {
+	background-image: url("../images/toolbar/ZoomOutTool_B_16.png");
+	background-repeat: no-repeat;
+}
+
+#mapPanToolBtn {
+	background-image: url("../images/toolbar/PanTool16.png");
+	background-repeat: no-repeat;
+}
+
+#mapZoomToFullExtentBtn {
+	background-image: url("../images/toolbar/ZoomFullExtent16.png");
+	background-repeat: no-repeat;
+}
+
+#mapZoomToPrevExtentBtn {
+	background-image:
+		url("../images/toolbar/GenericBlueLightLeftArrow16.png");
+	background-repeat: no-repeat;
+}
+
+#mapZoomToNextExtentBtn {
+	background-image:
+		url("../images/toolbar/GenericBlueLightRightArrow16.png");
+	background-repeat: no-repeat;
+}
+
+#areaMeasureBtn {
+	background-image: url("../images/toolbar/AreaMeasure_16.png");
+	background-repeat: no-repeat;
+}
+
+#lengthMeasureBtn {
+	background-image: url("../images/toolbar/LengthMeasure_16.png");
+	background-repeat: no-repeat;
+}
+
+#RecSelectBtn {
+	background-image: url("../images/toolbar/RecSelect_16.png");
+	background-repeat: no-repeat;
+}
+
+#mapIdentifyBtn {
+	background-image: url("../images/toolbar/IdentifyTool16.png");
+	background-repeat: no-repeat;
+}
+
+#mapGraphicsClearBtn {
+	background-image: url("../images/toolbar/clear.png");
+	background-repeat: no-repeat;
+}
+
+#mapZoomToFullScreenBtn {
+	background-image: url("../images/toolbar/ZoomFullExtentCross16.png");
+	background-repeat: no-repeat;
+} */

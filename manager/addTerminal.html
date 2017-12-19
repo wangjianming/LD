@@ -1,0 +1,173 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<form role="form" class="form-horizontal" id="addTerminalForm"
+	accept-charset="utf-8" role="form">
+	<!-- 	<div class="form-group">
+		<label class="col-sm-2 control-label" for="tid">序列号(SN)</label>
+		<div class="col-lg-9">
+			<input name="tid" type="text" id="tid" placeholder="序列号(SN)"
+				class="form-control" required="required" value="" />
+		</div>
+	</div> -->
+	<div class="form-group">
+		<label class="col-lg-2 control-label" for="type">终端类型</label>
+		<div class="col-lg-9">
+			<select id="type" name="type" style="width: 100%" class="type-select"
+				placeholder="终端类型">
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-lg-2 control-label" for="cId">北斗卡ID</label>
+		<div class="col-lg-9">
+			<input type="text" name="cId" class="form-control" id="cId"
+				placeholder="北斗卡ID">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-lg-2 control-label" for="oid">所属部门</label>
+		<div class="col-lg-9">
+			<select id="department" name="oid" style="width: 100%"
+				class="department-select">
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-lg-2 control-label" for="owner">持有人</label>
+		<div class="col-lg-9">
+			<input type="text" name="owner" class="form-control" id="owner"
+				check-type="required" placeholder="持有人">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-lg-2 control-label" for="dateBuy">购买日期</label>
+		<div class="col-lg-9">
+			<div class='input-group date' id='dateBuy'>
+				<input type='text' class="form-control" id="date" name="date" /> <span
+					class="input-group-addon"> <span
+					class="glyphicon glyphicon-calendar"></span>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">轨迹预设颜色</label>
+		<div class="col-sm-8">
+			<input id="color" type="text" name="color" readonly />
+		</div>
+	</div>
+
+	<div class="btn-group" style="padding-left: 200px;">
+		<button type="submit" class="btn btn-success" id="submitForm">
+			<li class="glyphicon glyphicon-check">保存</li>
+		</button>
+		<button type="button" class="btn btn-warning" id="resetBtnAdd"
+			style="margin-left: 5px; margin-right: 5px;">
+			<li class="glyphicon glyphicon-repeat">重置</li>
+		</button>
+		<button type="button" class="btn btn-danger" data-dismiss="modal"
+			id="btn-close">
+			<li class="glyphicon glyphicon-remove">取消</li>
+		</button>
+	</div>
+</form>
+<script type="text/javascript" src="js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$("#color").colorpicker({
+			color : "#4876FF",
+		});
+		levelName("#department", 0);//取得所有部门
+		$(".type-select").select2({
+			data : $.map(Config.termType, function(item, index) {
+				return {
+					"id" : index,
+					"text" : item,
+				};
+			}),
+			minimumResultsForSearch : Infinity,// 禁用搜索
+			allowClear : true
+		// 是否允许用户清除文本信息
+		});
+		//	dutyPeople();
+		$('#dateBuy').datetimepicker({
+			locale : 'zh-CN',
+			format : "YYYY-MM-DD HH:mm:ss",
+			sideBySide : true,
+		});
+
+		/* 	$("#department").on("change", function(e) {
+				var department = $('#department').val();
+				//var checkText=$("#department").find("option:selected").text();  
+				//alert(checkText);
+				dutyPeople(department);
+			}); */
+
+	});
+	$('#addTerminalForm').bootstrapValidator({
+		message : '无效值',
+		feedbackIcons : {
+			valid : 'glyphicon glyphicon-ok',
+			invalid : 'glyphicon glyphicon-remove',
+			validating : 'glyphicon glyphicon-refresh'
+		},
+		submitHandler : function(validator, form, submitButton) {
+			addTerminal(form);
+		},
+		fields : {
+			tid : {
+				validators : {
+					notEmpty : {
+						message : '不能为空'
+					},
+					regexp : {
+						regexp : /^[0-9]+$/,
+						message : '只能由数字组成'
+					}
+				}
+			},
+			type : {
+				validators : {
+					notEmpty : {
+						message : '终端类型不能为空'
+					},
+					regexp : {
+						regexp : /^[0-9]+$/,
+						message : '只能由数字组成'
+					}
+				}
+			},
+			cid : {
+				validators : {
+					notEmpty : {
+						message : '北斗卡ID不能为空'
+					},
+					regexp : {
+						regexp : /^[0-9]+$/,
+						message : '只能由数字组成'
+					}
+				}
+			},
+			/* 	uid : {
+					validators : {
+						notEmpty : {
+							message : '责任人ID不能为空'
+						}
+					}
+				}, */
+			dateBuy : {
+				validators : {
+					date : {
+						format : 'YYYY-MM-DD HH:mm:ss'
+					},
+					notEmpty : {
+						message : '购买时间不能为空'
+					}
+				}
+			},
+		}
+	});
+	$('#resetBtnAdd').click(function() {
+		$('#addTerminalForm').data('bootstrapValidator').resetForm(true);
+	});
+</script>

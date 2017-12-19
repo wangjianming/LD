@@ -1,0 +1,137 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript">
+	$(function() {
+		levelName("#oid", 1);
+	});
+	$('#addForm').bootstrapValidator({
+		//          live: 'disabled',
+		message : '无效值',
+		feedbackIcons : {
+			valid : 'glyphicon glyphicon-ok',
+			invalid : 'glyphicon glyphicon-remove',
+			validating : 'glyphicon glyphicon-refresh'
+		},
+		submitHandler : function(validator, form, submitButton) {
+			addUser(form);
+		},
+		fields : {
+			uid : {
+				validators : {
+					notEmpty : {
+						message : '账号不能为空'
+					}
+				}
+			},
+			uname : {
+				validators : {
+					notEmpty : {
+						message : '用户名不能为空'
+					}
+				/* ,
+									regexp : {
+										regexp : /^[a-zA-Z0-9_\.]+$/,
+										message : '用户名只能由字母，数字，圆点和下划线组成'
+									} */
+				}
+			},
+			upassword : {
+				validators : {
+					notEmpty : {
+						message : '密码不能为空'
+					},
+					stringLength : {
+						min : 1,
+						max : 30,
+						message : '密码长度为1到30位'
+					},
+					identical : {
+						field : 'password2',
+						message : '密码与确认密码不一致'
+					},
+				}
+			},
+			password2 : {
+				validators : {
+					notEmpty : {
+						message : '确认密码不能为空'
+					},
+					stringLength : {
+						min : 1,
+						max : 30,
+						message : '密码长度为1到30位'
+					},
+					identical : {
+						field : 'upassword',
+						message : '密码与确认密码不一致'
+					}
+				}
+			},
+			uphone : {
+				validators : {
+					digits : {
+						message : '号码只能是数字'
+					}
+				}
+			},
+		}
+	});
+
+	$('#resetBtn').click(function() {
+		$('#addForm').data('bootstrapValidator').resetForm(true);
+	});
+</script>
+<form role="form" class="form-horizontal" id="addForm" method="post"
+	accept-charset="utf-8">
+	<div class="form-group">
+		<label class="col-lg-2 control-label" for="uname">用户名</label>
+		<div class="col-lg-9">
+			<input class="form-control" name="uname" type="text" id="uname"
+				placeholder="用户名" required="required" value="" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-lg-2 control-label" for="upassword">密码</label>
+		<div class="col-lg-9">
+			<input type="password" name="upassword" class="form-control"
+				required-message="密码不能为空！" id="upassword" check-type="required"
+				placeholder="密码">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-lg-2" for="Password2">确认密码</label>
+		<div class="col-lg-9">
+			<input type="password" name="password2" class="form-control"
+				required-message="确认密码不能为空！" id="password2" placeholder="确认密码"
+				check-type="required">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="oid" class="control-label col-lg-2">部门</label>
+		<div class="col-lg-9">
+			<select id="oid" name="oid" style="width: 100%"
+				class="js-example-basic-single">
+			</select>
+		</div>
+	</div>
+	<div class="form-group" style="display:none">
+		<label class="col-lg-2 control-label" for="uphone">联系电话</label>
+		<div class="col-lg-9">
+			<input class="form-control" name="uphone" type="text" id="uphone"
+				placeholder="联系电话" required="required" value="" />
+		</div>
+	</div>
+	<hr />
+	<div class="btn-group" style="padding-left: 200px;">
+		<button type="submit" class="btn btn-success" id="submitForm">
+			<li class="glyphicon glyphicon-check">保存</li>
+		</button>
+		<button type="reset" class="btn btn-warning" id="resetBtn"
+			style="margin-left: 5px; margin-right: 5px;">
+			<li class="glyphicon glyphicon-repeat">重置</li>
+		</button>
+		<button type="button" class="btn btn-danger" data-dismiss="modal"
+			id="btn-close">
+			<li class="glyphicon glyphicon-remove">取消</li>
+		</button>
+	</div>
+</form>

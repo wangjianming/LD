@@ -1,0 +1,112 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="js/group.js"></script>
+<script type="text/javascript">
+	$(function() {
+		//	valiator();
+		$('#changeForm').bootstrapValidator({
+			message : '无效值',
+			feedbackIcons : {
+				valid : 'glyphicon glyphicon-ok',
+				invalid : 'glyphicon glyphicon-remove',
+				validating : 'glyphicon glyphicon-refresh'
+			},
+			submitHandler : function(validator, form, submitButton) {
+				change(form);
+			},
+			fields : {
+				username : {
+					validators : {
+						notEmpty : {
+							message : '用户名不能为空'
+						}
+					/* ,
+										regexp : {
+											regexp : /^[a-zA-Z0-9_\.]+$/,
+											message : '用户名只能由字母，数字，圆点和下划线组成'
+										} */
+					}
+				},
+				oldpass : {
+					validators : {
+						notEmpty : {
+							message : '旧密码不能为空'
+						}
+					}
+				},
+				newpass : {
+					validators : {
+						notEmpty : {
+							message : '新密码不能为空'
+						},
+						stringLength : {
+							min : 1,
+							max : 30,
+							message : '密码长度为1到30位'
+						},
+						identical : {
+							field : 'newpass2',
+							message : '密码与确认密码不一致'
+						},
+					}
+				},
+				newpass2 : {
+					validators : {
+						notEmpty : {
+							message : '确认密码不能为空'
+						},
+						stringLength : {
+							min : 1,
+							max : 30,
+							message : '密码长度为1到30位'
+						},
+						identical : {
+							field : 'newpass',
+							message : '密码与确认密码不一致'
+						}
+					}
+				},
+			}
+		});
+	});
+	$('#changeReset').click(function() {
+		$('#changeForm').data('bootstrapValidator').resetForm(true);
+	});
+</script>
+<form role="form" class="form-horizontal" id="changeForm" method="post"
+	action="../rest/user/edit" accept-charset="utf-8">
+	<div class="form-group">
+		<label class="col-lg-3 control-label" for="oldpass">旧密码</label>
+		<div class="col-lg-7">
+			<input class="form-control" name="oldpass" type="text"
+				id="oldpass" placeholder="旧密码" value="" />
+		</div>
+	</div>
+	<div class="form-group ">
+		<label class="col-lg-3 control-label" for="newpass">新密码</label>
+		<div class="col-lg-7">
+			<input class="form-control" name="newpass" type="text"
+				id="newpass" placeholder="新密码" required="required" value="" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-lg-3 control-label" for="newpass2">确认新密码</label>
+		<div class="col-lg-7">
+			<input class="form-control" name="newpass2" type="text"
+				id="newpass2" placeholder="确认新密码" value="" />
+		</div>
+	</div>
+	<hr />
+	<div class="btn-group" style="padding-left: 200px;">
+		<button type="submit" class="btn btn-success" id="btn-ok">
+			<li class="glyphicon glyphicon-check">OK</li>
+		</button>
+		<button type="reset" class="btn btn-warning" id="changeReset"
+			style="margin-left: 5px; margin-right: 5px;">
+			<li class="glyphicon glyphicon-repeat">重置</li>
+		</button>
+		<button type="button" class="btn btn-danger" data-dismiss="modal"
+			id="btn-close">
+			<li class="glyphicon glyphicon-remove">关闭</li>
+		</button>
+	</div>
+</form>

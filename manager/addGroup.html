@@ -1,0 +1,109 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript">
+	$(function() {
+		levelName("#zone1", 1);
+	});
+
+	$('#addGroupForm').bootstrapValidator({
+		message : '无效值',
+		feedbackIcons : {
+			valid : 'glyphicon glyphicon-ok',
+			invalid : 'glyphicon glyphicon-remove',
+			validating : 'glyphicon glyphicon-refresh'
+		},
+		submitHandler : function(validator, form, submitButton) {
+			addForm(form);
+		},
+		fields : {
+			team : {
+				validators : {
+					notEmpty : {
+						message : '队名不能为空'
+					}
+				}
+			},
+			leader : {
+				validators : {
+					notEmpty : {
+						message : '不能为空'
+					}
+				}
+			},
+			omember : {
+				validators : {
+					notEmpty : {
+						message : '不能为空'
+					}
+				}
+			},
+			ophone : {
+				validators : {
+					notEmpty : {
+						message : '联系电话不能为空'
+					},
+				/*  regexp: {
+				    regexp: /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/,
+				    message: '电话号码格式不正确'
+				} */
+				}
+			}
+		}
+	});
+
+	$('#groupReset').click(function() {
+		$('#addGroupForm').data('bootstrapValidator').resetForm(true);
+	});
+</script>
+<form class="form-horizontal" id="addGroupForm" method="post"
+	role="form" accept-charset="utf-8">
+	<div class="form-group">
+		<label for="zone" class="control-label col-lg-2">所属区域</label>
+		<div class="col-lg-9">
+			<select id="zone1" name="zone" style="width: 100%"
+				class="group form-control">
+			</select>
+		</div>
+	</div>
+	<div class="form-group ">
+		<label class="col-lg-2 control-label" for="team">队名</label>
+		<div class="col-lg-9">
+			<input class="form-control" name="team" type="text" id="team"
+				placeholder="队名" required="required" value="" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-lg-2 control-label" for="leader">队长</label>
+		<div class="col-lg-9">
+			<input class="form-control" name="leader" type="text" id="leader"
+				placeholder="队长" required="required" value="" />
+		</div>
+	</div>
+	<div class="form-group ">
+		<label class="col-lg-2 control-label" for="ophone">联系电话</label>
+		<div class="col-lg-9">
+			<input class="form-control" name="ophone" type="text" id="ophone"
+				placeholder="联系电话" required="required" value="" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-lg-2 control-label" for="omember">队员</label>
+		<div class="col-lg-9">
+			<input class="form-control" name="omember" type="text" id="omember"
+				placeholder="队员" required="required" value="" />
+		</div>
+	</div>
+	<hr />
+	<div class="btn-group" style="padding-left: 200px;">
+		<button type="submit" class="btn btn-success" id="group-ok">
+			<li class="glyphicon glyphicon-check">保存</li>
+		</button>
+		<button type="reset" class="btn btn-warning" id="groupReset"
+			style="margin-left: 5px; margin-right: 5px;">
+			<li class="glyphicon glyphicon-repeat">重置</li>
+		</button>
+		<button type="button" class="btn btn-danger" data-dismiss="modal"
+			id="btn-close">
+			<li class="glyphicon glyphicon-remove">取消</li>
+		</button>
+	</div>
+</form>
