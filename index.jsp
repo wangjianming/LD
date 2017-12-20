@@ -68,10 +68,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</ul>
 			</li>
 			<li>
-				<div class="link"><i class="fa fa-code"></i>公会<i class="fa fa-chevron-down"></i></div>
+				<div class="link"><i id="com-flow" class="fa fa-code"></i>公会<i class="fa fa-chevron-down"></i></div>
 				<ul class="submenu">
 					<li><a id ="players"  href ="#">玩家管理</a></li>
-					<li><a id="flow"      href ="#">创造积分</a></li>
+					<li><a id="flow"      href ="#">查看流水</a></li>
 					<li><a id="community" href= "#">公会管理</a></li>
 					<li><a id="rating"    href ="#">推广员管理</a></li>
 				</ul>

@@ -153,7 +153,64 @@ body {
         {
         	 $('#dg').datagrid({
 					loadFilter:pagerFilter,
-					singleSelect:true,				
+					singleSelect:true,
+					view: detailview,
+					detailFormatter: function(rowIndex, rowData){
+				
+						return '<table id=player'+rowData.player_id+' class="subCategory"></table>'; 
+					}, 
+					
+					onExpandRow: function(index,row){
+									var flowDetail = [];
+									$.ajax({
+										type : "get",
+										url:'http://106.75.133.210/manage/getplrpntdetl?count=10000&start=0&'+"sessionid="+parent.arr[1].split("#")[0]+"&id="+row.player_id,
+										cache : false,
+										dataType : 'json',
+										success : function(result) {
+											if (result.result_code == 10000) {									
+												flowDetail = result.result_value												
+												var getData = function(){
+													return [{"pointsway":"a","points":"b"}]
+												}
+												var subCategory = $('#dg').datagrid('getRowDetail',index).find('table.subCategory');								
+					
+									 
+												subCategory.datagrid({
+													data:flowDetail,							
+													fitColumns:true,
+													singleSelect:true,
+													rownumbers:true,
+													loadMsg:'加载中，请稍后...',
+													height:'auto',
+													columns:[[
+														{field:'pointsway',title:'列1',width:100,sortable:true}, 
+														{field:'points',title:'列2',width:100,sortable:true}, 
+														{field:'pointsdate',title:'列3',width:100,sortable:true}, 
+														{field:'detail',title:'列4',width:100,sortable:true}
+
+													]],
+													onResize:function(){
+														$('#dg').datagrid('fixDetailRowHeight',index);
+													},
+													onLoadSuccess:function(){
+														$('#dg').datagrid('fixDetailRowHeight',index);
+													}
+												});
+									
+									
+											}
+											else {
+												$.messager.alert("提示信息", "操作失败");
+											}
+										},
+									});
+									
+									
+									
+									
+					}
+				
 				}
 
 			 ).datagrid('loadData', parent.ajaxData.result_value);
@@ -174,25 +231,8 @@ body {
         	var row = $("#dg").datagrid("getSelected");
 	        if (row) 
 	        {
-				//alert(row.player_id+":"+row.name);
-				$.ajax({
-					type : "get",
-					url:'http://106.75.133.210/manage/getplrpntdetl?count=10000&start=0&'+"sessionid="+parent.arr[1].split("#")[0]+"&id="+row.player_id,
-					cache : false,
-					dataType : 'json',
-					success : function(result) {
-						if (result.result_code == 10000) {									
-							parent.userFlow = result.result_value;
-							parent.nameOfuserFlow = row.name
-							//$("#flow",parent.document).click();
-							//parent.document.getElementById("com-flow").click();							
-							parent.document.getElementById("flow").click();
-						}
-						else {
-							$.messager.alert("提示信息", "操作失败");
-						}
-					},
-				});
+				alert(row.player_id+":"+row.name);
+				
 	        	/*
 				"player_id": 8,
 				"name": "123",

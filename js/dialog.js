@@ -11,6 +11,8 @@
     var listPlayersUrl;
     var listGHPlayers;
 	var getoddData;
+	var userFlow;
+	var nameOfuserFlow;
     window.onload = function(){
     	var url=window.location.href;	  //获取当前页面的url
     	var b=url.split("?")[1]; //获取第一个参数以后的内容 
@@ -87,7 +89,8 @@
                 iframe.src = "http://localhost:8080/LD/html/cheeseAndplay/players.html";  
              });
     		 $("#flow").click(function(){
-                 return false; 
+                 iframe.onload = iframe.onreadystatechange = iframeload;   
+                 iframe.src = "http://localhost:8080/LD/html/cheeseAndplay/flow.html";  
              });
     		 $("#rating").click(function(){
     			 iframe. onload = iframe.onreadystatechange = iframeload;   
@@ -114,7 +117,8 @@
                  iframe.src = "http://localhost:8080/LD/html/cheeseAndplay/players.html";  
              });
     		 $("#flow").click(function(){
-                 return false; 
+                 iframe.onload = iframe.onreadystatechange = iframeload;   
+                 iframe.src = "http://localhost:8080/LD/html/cheeseAndplay/flow.html";  
              });
     		 $("#rating").click(function(){
     			 iframe. onload = iframe.onreadystatechange = iframeload;   
