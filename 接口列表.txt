@@ -1,0 +1,21 @@
+【12月20日之后新增接口】
+查看用户推广的情况
+http://106.75.133.210/manage/listextdplayer?sessionid=c1c46c52-e255-4f8e-9466-175742f69731&name=by123456&count=100&start=0
+
+查看有过推广记录的用户
+http://106.75.133.210/manage/listextender?sessionid=c1c46c52-e255-4f8e-9466-175742f69731&count=10000&start=0
+
+查看推广记录详情，入参sessionid 用户id
+http://106.75.133.210/manage/listextenderbyid?sessionid=c1c46c52-e255-4f8e-9466-175742f69731&id=24&&count=10000&start=0
+
+获取除本公会外其他公会列表
+http://106.75.133.210/manage/listotherguilds?sessionid=c1c46c52-e255-4f8e-9466-175742f69731&guildid=1&count=10000&start=0
+
+释放工会中的成员到其他公会
+http://106.75.133.210/manage/releaseguild?sessionid=c1c46c52-e255-4f8e-9466-175742f69731&oldid=1&newid=2
+
+根据用户id获得流水
+http://106.75.133.210/manage/getplrpntdetl?sessionid=c1c46c52-e255-4f8e-9466-175742f69731&id=40&count=10000&start=0
+
+根据id删除其推广用户的投注派奖详细记录情况
+http://106.75.133.210/manage/rlsplayerbets?sessionid=c1c46c52-e255-4f8e-9466-175742f69731&id=13

@@ -13,7 +13,10 @@
 	var getoddData;
 	var userFlow;
 	var nameOfuserFlow;
+	var ratingData;
     window.onload = function(){
+		
+
     	var url=window.location.href;	  //获取当前页面的url
     	var b=url.split("?")[1]; //获取第一个参数以后的内容 
     	var c=b.split("&");   //从指定的地方将字符串分割成字符串数组
@@ -52,13 +55,27 @@
             	 alert("Sorry，I can not get the feed"); 
             } 
          });
-		 
+		 //赔率？
 		 $.ajax({
              url: "http://106.75.133.210/guess/getodds?"+"sessionid="+arr[1].split("#")[0]+"&start=0&count=10000",
              type: "get",
              dataType: "json",
              success: function (data) {
 				 getoddData = data.result_value;
+             },
+             error:function(result) {
+            	 alert("Sorry，I can not get the feed"); 
+            } 
+         });
+		 //推广员
+		 $.ajax({
+             url: "http://106.75.133.210/manage/listextender?"+"sessionid="+arr[1].split("#")[0]+"&start=0&count=1000",
+             type: "get",
+             dataType: "json",
+             success: function (data) {            	 
+				
+				 ratingData = data.result_value;
+
              },
              error:function(result) {
             	 alert("Sorry，I can not get the feed"); 
@@ -128,6 +145,8 @@
     		 $("#flow")[0].style.opacity=1;
     		 $("#rating")[0].style.opacity=1;
     		 $("#community")[0].style.opacity=1;
+			 
+			 $("#flow_li").css("display","none");
     	 }
     	 else{
     		 iframe.src = "http://localhost:8080/LD/html/cheeseAndplay/players.html";

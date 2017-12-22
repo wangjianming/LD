@@ -41,17 +41,46 @@ body {
         } 
 </style>
 <body>
-<table id="playersBroaddg" title="用户推广" class="easyui-datagrid"  toolbar="#toolbarbroad" pagination="true" rownumbers="true" pagenumber=1  pageSize = 10 fitcolumns="true" singleselect="true" style='overflow:"auto"'>
+<div id="rating">
+       <!--  <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" onclick="newuser()" plain="true">添加</a> 
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" onclick="edituser()" plain="true">修改</a> 
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove" onclick="destroyUser()" plain="true">删除</a> -->
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-reload" onclick="getRatingDetail()" plain="true">查看推广记录</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="delRatingDetail()" plain="true">消除推广记录</a>
+</div>
+ <div id="dlg" class="easyui-dialog" style="width: 800px; height: 400px; padding: 10px 20px;"
+       closed="true" buttons="#dlg-buttons"> 
+
+       <table id="ratingdetail" title="推广详情" class="easyui-datagrid" pagination="true" rownumbers="true" pagenumber=1  pageSize = 10 fitcolumns="true" singleselect="true" style='overflow:"auto"'>
 		        <thead>
 		            <tr>
-		                <th field="player_id" width="25">
+		                <th field="playerid" width="25">
 		            	ID
 		                </th>
 		                <th field="name" width="35">
 		                                         账号
 		                </th>
-		                <th field="phone" width="60">
-		                                       手机号
+		                <th field="extendcode" width="60">
+		                                       extendcode
+		                </th>
+		               <th field="points" width="25">
+		                                         点数
+		                </th>
+		            </tr>
+		        </thead>
+		</table>
+</div>
+<table id="playersBroaddg" title="用户推广" class="easyui-datagrid"  toolbar="#rating" pagination="true" rownumbers="true" pagenumber=1  pageSize = 10 fitcolumns="true" singleselect="true" style='overflow:"auto"'>
+		        <thead>
+		            <tr>
+		                <th field="playerid" width="25">
+		            	ID
+		                </th>
+		                <th field="name" width="35">
+		                                         账号
+		                </th>
+		                <th field="extendcode" width="60">
+		                                       extendcode
 		                </th>
 		               <th field="points" width="25">
 		                                         点数
@@ -63,8 +92,7 @@ body {
 <script>
  window.onload = function()
   {
-   	var weekArray = JSON.parse(window.localStorage.getItem('weekDay'));
-  	$("#playersBroaddg").datagrid({loadFilter:pagerFilter}).datagrid('loadData', weekArray);
+  	$("#playersBroaddg").datagrid({loadFilter:pagerFilter}).datagrid('loadData', parent.ratingData);
   }
    function pagerFilter(data){
             if (typeof data.length == 'number' && typeof data.splice == 'function'){    // 判断数据是否是数组
@@ -98,6 +126,59 @@ body {
             data.rows = (data.originalRows.slice(start, end));
             return data;
         }
+		
+		function getRatingDetail()
+		{
+			var row = $("#playersBroaddg").datagrid("getSelected");	
+			if(!row)return;
+			$("#dlg").dialog("open").dialog('setTitle', '推广详情');
+			$.ajax({
+					type : "get",
+					url:'http://106.75.133.210/manage/listextenderbyid?count=10000&start=0&'+"sessionid="+parent.arr[1].split("#")[0]+"&id="+row.playerid,
+					cache : false,
+					dataType : 'json',
+					success : function(result) {
+						if (result.result_code == 10000) {									
+							//$("#flow",parent.document).click();
+							//parent.document.getElementById("com-flow").click();							
+							$("#ratingdetail").datagrid({loadFilter:pagerFilter}).datagrid('loadData', result.result_value);
+
+						}
+						else {
+							$.messager.alert("提示信息", "操作失败");
+						}
+					},
+				});
+		}
+		
+		function delRatingDetail()
+		{
+			var row = $("#playersBroaddg").datagrid("getSelected");	
+			if(!row)return;
+			
+			$.messager.confirm('提示','你要删除吗?',function(r){
+
+　　　　　　　　　　if(r){
+　　　　　　　　　　　　　　$.ajax({
+								type : "get",
+								url:'http://106.75.133.210/manage/rlsplayerbets?'+"sessionid="+parent.arr[1].split("#")[0]+"&id="+row.playerid,
+								cache : false,
+								dataType : 'json',
+								success : function(data) {
+								
+									if(data.result_message != ""){
+										$.messager.alert("提示信息",data.result_message);
+									}else{
+										$.messager.alert("提示信息", "删除成功");
+										$("#playersBroaddg").datagrid({loadFilter:pagerFilter}).datagrid('loadData', parent.ratingData);
+									}									
+								},
+							});
+			　　　　　　}
+　　　　　　});
+
+			
+		}
 </script>
 </html>
 
