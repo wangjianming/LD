@@ -90,9 +90,31 @@ body {
 	</table>
 </body>
 <script>
+var ratingData;
+function loadTableData()
+{
+	//推广员
+	 $.ajax({
+		 url: "http://106.75.133.210/manage/listextender?"+"sessionid="+parent.sessionid+"&start=0&count=1000",
+		 type: "get",
+		 dataType: "json",
+		 success: function (data) {	 
+			 if("result_value" in data)
+			 {
+				ratingData = data.result_value;
+				$("#playersBroaddg").datagrid({loadFilter:pagerFilter}).datagrid('loadData', ratingData);
+			 }		 
+
+		 },
+		 error:function(result) {
+			 alert("Sorry，I can not get the feed"); 
+		} 
+	 });
+}
  window.onload = function()
   {
-  	$("#playersBroaddg").datagrid({loadFilter:pagerFilter}).datagrid('loadData', parent.ratingData);
+	loadTableData();
+  	
   }
    function pagerFilter(data){
             if (typeof data.length == 'number' && typeof data.splice == 'function'){    // 判断数据是否是数组
@@ -170,8 +192,10 @@ body {
 										$.messager.alert("提示信息",data.result_message);
 									}else{
 										$.messager.alert("提示信息", "删除成功");
-										$("#playersBroaddg").datagrid({loadFilter:pagerFilter}).datagrid('loadData', parent.ratingData);
-									}									
+										
+										//TODO ,可能要重新请求一下
+									}
+									loadTableData();
 								},
 							});
 			　　　　　　}

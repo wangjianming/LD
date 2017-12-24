@@ -13,7 +13,7 @@
 	var getoddData;
 	var userFlow;
 	var nameOfuserFlow;
-	var ratingData;
+	var sessionid;
     window.onload = function(){
 		
 
@@ -25,6 +25,7 @@
     	 	 var d=c[i].split("=")[1]; //从=处将字符串分割成字符串数组,并选择第2个元素
     	         arr.push(d);	 //将获取的元素存入到数组中	
     	}
+		sessionid = arr[1].split("#")[0];
     	$(".panel-tool")[0].style.display = 'none';
     	listPlayersUrl = "http://106.75.133.210/manage/listallplayers?";
     	listPlayersUrlGH ="http://106.75.133.210/manage/listguilds?";
@@ -32,7 +33,7 @@
     	iframe = document.getElementById("loadHtml");  
     	//动态加载标题和数据———玩家
          $.ajax({
-             url: listPlayersUrl+"sessionid="+arr[1].split("#")[0]+"&start=0&count=10000",
+             url: listPlayersUrl+"sessionid="+sessionid+"&start=0&count=10000",
              type: "get",
              dataType: "json",
              success: function (data) {
@@ -67,20 +68,7 @@
             	 alert("Sorry，I can not get the feed"); 
             } 
          });
-		 //推广员
-		 $.ajax({
-             url: "http://106.75.133.210/manage/listextender?"+"sessionid="+arr[1].split("#")[0]+"&start=0&count=1000",
-             type: "get",
-             dataType: "json",
-             success: function (data) {            	 
-				
-				 ratingData = data.result_value;
-
-             },
-             error:function(result) {
-            	 alert("Sorry，I can not get the feed"); 
-            } 
-         });
+		 
 		 
          $(".layout-panel-west.layout-split-west")[0].style.width="130px";
          $(".layout-panel.layout-panel-center")[0].style.left="130.3px";
